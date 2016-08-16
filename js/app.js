@@ -1,5 +1,6 @@
   var secretNumber;
   var guessCount = 0;
+  var guessList =[];
 
 $(document).ready(function(){
 
@@ -17,9 +18,17 @@ $(document).ready(function(){
 
   /*--- Check result ----*/
   $('form').submit(function(event) {
+    var userGuess = $("#userGuess").val();
+		
+    event.preventDefault();
 
-		event.preventDefault();
-		checkNumber();
+    if(!checkRepeatedNumber(userGuess)){
+      alert("You already guessed this number!");
+      return false;
+    }
+
+    guessList.push(userGuess);
+		checkNumber(userGuess);
 
 		guessCount++;
 		$("#count").text(guessCount);
@@ -57,9 +66,19 @@ function genNumber(){
   console.log(secretNumber);
 }
 
+/*--- Step 3.1 add the number in an array and check if the number is alreay guessed ---*/
+function checkRepeatedNumber(userGuess){
+  for(var i=0;i<guessList.length;i++){
+    if(guessList[i]== userGuess){
+      return false;
+    }
+  }
+  return true;
+}
+
 /*--- Step 3 Check your guess ---*/
-function checkNumber(){
-  var userGuess = $("#userGuess").val();
+function checkNumber(userGuess){
+  
   console.log(secretNumber);
   console.log(userGuess);
 
@@ -76,6 +95,7 @@ function checkNumber(){
     //clear textbox
     $("#userGuess").val("");
   }
+
 }
     
 /*--- Step 4: Check guess status --*/
